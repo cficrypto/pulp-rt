@@ -122,7 +122,7 @@ is_ariane:
   addi  a1, x0, 0
 
   // Jump to main program entry point (argc = a0, argv = a1).
-  la    t2, main
+  la    t2, __main
   jalr  x1, t2
   mv    s0, a0
 

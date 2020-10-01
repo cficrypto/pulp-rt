@@ -22,6 +22,18 @@
 #include "rt/rt_api.h"
 #include "archi/pulp.h"
 
+int main( int argc, char* argv[] );
+int __attribute__ ((noinline, optimize("no-optimize-sibling-calls"))) _main( int argc, char* argv[] );
+int __attribute__ ((noinline, optimize("no-optimize-sibling-calls"))) __main( int argc, char* argv[] );
+
+int __main( int argc, char* argv[] ) {
+  return _main( argc, argv );
+}
+
+int _main( int argc, char* argv[] ) {
+  return main( argc, argv );
+}
+
 int pmsis_exit_value;
 
 typedef void (*fptr)(void);
