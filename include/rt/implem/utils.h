@@ -563,13 +563,13 @@ static inline unsigned int __rt_get_fc_vector_base()
     #else
       if (rt_is_fc()) {
         #if defined(ARCHI_CORE_HAS_SECURITY) && !defined(ARCHI_CORE_HAS_1_10)
-          return __builtin_pulp_spr_read(SR_MTVEC);
+          return hal_spr_read(SR_MTVEC);
         #elif defined(ARCHI_CORE_HAS_1_10)
           #ifdef RV_ISA_RV32
             return hal_spr_read(0x7D1) & ~1; //MTVECx in Ibex with Pulpissimo Patch
             //return 0;
           #else
-            return __builtin_pulp_spr_read(SR_MTVEC) & ~1;
+            return hal_spr_read(SR_MTVEC) & ~1;
           #endif
         #elif defined(APB_SOC_VERSION) && APB_SOC_VERSION >= 2
           return apb_soc_bootaddr_get();
@@ -599,12 +599,12 @@ static inline void __rt_set_fc_vector_base(unsigned int base)
     #else
       if (rt_is_fc()) {
         #if defined(ARCHI_CORE_HAS_SECURITY)
-          __builtin_pulp_spr_write(SR_MTVEC, base);
+          hal_spr_write(SR_MTVEC, base);
         #elif defined(ARCHI_CORE_HAS_1_10)
           #ifdef RV_ISA_RV32
             hal_spr_write(0x7D1, base); //MTVECx in Ibex with Pulpissimo Patch
           #else
-            __builtin_pulp_spr_write(SR_MTVEC, base | 1);
+            hal_spr_write(SR_MTVEC, base | 1);
           #endif
         #elif defined(APB_SOC_VERSION) && APB_SOC_VERSION >= 2
           apb_soc_bootaddr_set(base);
