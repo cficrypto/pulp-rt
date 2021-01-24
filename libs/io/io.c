@@ -141,7 +141,7 @@ int memcmp(const void *m1, const void *m2, size_t n)
   return 0;
 }
 
-void *memset(void *m, int c, size_t n)
+void * __attribute__ ((externally_visible)) memset(void *m, int c, size_t n)
 {
   char *s = (char *)m;
   while (n--)
