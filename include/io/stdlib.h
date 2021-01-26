@@ -35,6 +35,9 @@
 
 #include <stddef.h>
 
+int abs(int j);
+long labs(long j);
+
 void exit(int status);
 
 void abort(void);

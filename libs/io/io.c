@@ -68,6 +68,16 @@ static void domain_free(void *ptr, int domain)
   rt_free(domain, alloc_ptr, size);
 }
 
+int abs (int i)
+{
+  return i < 0 ? -i : i;
+}
+
+long labs (long i)
+{
+  return i < 0 ? -i : i;
+}
+
 void *malloc(size_t size)
 {
   return domain_malloc(size, RT_ALLOC_FC_DATA);
