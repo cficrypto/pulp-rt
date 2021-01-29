@@ -23,6 +23,7 @@
 #include "archi/pulp.h"
 
 __attribute__((noinline, weak)) void _atexit_hack(int status) {(void)status;asm ("");}
+__attribute__((noinline)) void __atexit_hack(int status) {_atexit_hack(status);}
 
 int main( int argc, char* argv[] );
 int __attribute__ ((noinline, optimize("no-optimize-sibling-calls"))) _main( int argc, char* argv[] );
@@ -34,7 +35,7 @@ int __main( int argc, char* argv[] ) {
 
 int _main( int argc, char* argv[] ) {
   volatile int status = main( argc, argv );
-  _atexit_hack(status);
+  __atexit_hack(status);
   return status;
 }
 
