@@ -33,6 +33,8 @@
 #ifndef __RTIO_STDIO_H__
 #define __RTIO_STDIO_H__
 
+#include <stddef.h>
+
 typedef int FILE;
 
 #define stdin  ((FILE *) 1)
@@ -50,6 +52,8 @@ int putchar(int c);
 int puts(const char *s);
 
 int sprintf(char *str, const char *fmt, ...) ;
+
+int snprintf(char *s, size_t len, const char *format, ...);
 
 int fputc(int c, FILE *stream);
 
