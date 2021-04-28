@@ -39,6 +39,8 @@ typedef int FILE;
 #define stdout ((FILE *) 2)
 #define stderr ((FILE *) 3)
 
+#define putc(c, f) fputc(c, f)
+
 int puts(const char *s);
 
 int printf(const char *format, ...);
