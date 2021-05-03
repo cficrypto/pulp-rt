@@ -38,6 +38,8 @@
 int abs(int j);
 long labs(long j);
 
+unsigned long strtoul(char *t, char **endp, int base);
+
 void exit(int status);
 
 void abort(void);
