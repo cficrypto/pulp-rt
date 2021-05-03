@@ -13,6 +13,11 @@
 extern "C" {
 #endif
 
+static inline int islower(int a)
+{
+	return ((unsigned)(a)-'a') < 26;
+}
+
 static inline int isupper(int a)
 {
 	return ((unsigned)(a)-'A') < 26;

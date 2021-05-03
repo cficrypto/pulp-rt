@@ -57,4 +57,6 @@ int snprintf(char *s, size_t len, const char *format, ...);
 
 int fputc(int c, FILE *stream);
 
+int sscanf(const char *str, const char *format, ...);
+
 #endif

@@ -8,7 +8,7 @@ endif
 
 ifeq '$(CONFIG_LIB_IO_ENABLED)' '1'
 PULP_LIB_FC_ASM_SRCS_rtio   += libs/io/setjmp.S
-PULP_LIB_FC_SRCS_rtio   += libs/io/io.c libs/io/fprintf.c libs/io/prf.c libs/io/sprintf.c libs/io/string.c libs/io/stdlib.c
+PULP_LIB_FC_SRCS_rtio   += libs/io/io.c libs/io/fprintf.c libs/io/prf.c libs/io/sprintf.c libs/io/scanf.c libs/io/string.c libs/io/stdlib.c
 PULP_LIBS += rtio
 endif
 
