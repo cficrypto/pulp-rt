@@ -134,6 +134,21 @@ void *memmove(void *d, const void *s, size_t n)
   return d;
 }
 
+void *memchr(const void *s, int c, size_t n)
+{
+	const unsigned char *s1 = s;
+
+	c = (unsigned char)c;
+	if (n > 0) {
+		do {
+			if (*s1 == c)
+				return (void *)s1;
+			s1++;
+		} while (--n > 0);
+	}
+	return NULL;
+}
+
 char *strcpy(char *d, const char *s)
 {
 	char *dest = d;
