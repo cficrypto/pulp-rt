@@ -24,7 +24,7 @@
 __rt_illegal_instr:
     sw   ra, -4(sp)
     sw   a0, -8(sp)
-    la   a0, __rt_handle_illegal_instr
+    la   a0, __rt_handle_exception
     jal  ra, __rt_call_c_function
     lw   ra, -4(sp)
     lw   a0, -8(sp)

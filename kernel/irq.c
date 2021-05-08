@@ -36,6 +36,15 @@
  */
 
 #include "rt/rt_api.h"
+#include "archi/pulp.h"
+
+#define EXC_CAUSE_INSTR_FAULT  0x01
+#define EXC_CAUSE_ILLEGAL_INSN 0x02
+#define EXC_CAUSE_BREAKPOINT   0x03
+#define EXC_CAUSE_LOAD_FAULT   0x05
+#define EXC_CAUSE_STORE_FAULT  0x07
+#define EXC_CAUSE_ECALL_UMODE  0x08
+#define EXC_CAUSE_ECALL_MMODE  0x0B
 
 static unsigned int __rt_get_itvec(unsigned int ItBaseAddr, unsigned int ItIndex, unsigned int ItHandler)
 
@@ -86,17 +95,19 @@ void rt_irq_set_handler(int irq, void (*handler)())
 #include <stdio.h>
 #include <stdlib.h>
 
-void __attribute__((weak)) illegal_insn_handler_c()
-{
+void __attribute__((weak)) illegal_insn_handler_c(void){}
 
-}
-
-void __rt_handle_illegal_instr()
+void __rt_handle_exception()
 {
 #ifdef __riscv__
+  unsigned int cause = hal_spr_read(RV_CSR_MCAUSE);
   unsigned int mepc = hal_mepc_read();
-  rt_warning("Reached illegal instruction (PC: 0x%x, opcode: 0x%x)\n", mepc, *(int *)mepc);
-  illegal_insn_handler_c();
+  rt_warning("Reached exception (cause: 0x%x, PC: 0x%x, opcode: 0x%x)\n", cause, mepc, *(int *)mepc);
+  switch (cause) {
+    case EXC_CAUSE_ILLEGAL_INSN: illegal_insn_handler_c(); break;
+    default:
+      rt_fatal("Unhandled exception: 0x%x\n", cause);
+  }
 #endif
 }
 
