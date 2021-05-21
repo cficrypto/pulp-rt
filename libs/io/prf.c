@@ -427,6 +427,7 @@ int _prf(int (*func)(), void *dest, char *format, va_list vargs)
 	int				precision;
 	int				prefix;
 	int				width;
+	int				width_limited;
 	char			*cptr_temp;
 	int32_t			*int32ptr_temp;
 	int32_t			int32_temp;
@@ -496,9 +497,7 @@ int _prf(int (*func)(), void *dest, char *format, va_list vargs)
 			 * two's complement.  To cover that case, cast it to
 			 * an unsigned before comparing it against MAXFLD.
 			 */
-			if ((unsigned) width > MAXFLD) {
-				width = MAXFLD;
-			}
+			width_limited = ((unsigned) width > MAXFLD) ? MAXFLD : width;
 
 			if (c == '.') {
 				c = *format++;
@@ -605,6 +604,24 @@ int _prf(int (*func)(), void *dest, char *format, va_list vargs)
 
 			case 's':
 				cptr_temp = (char *) va_arg(vargs, char *);
+				/* If we are left-justified, just write out the string. */
+				if (fminus || width == 0) {
+					int c = 0;
+					while (*cptr_temp != '\0' && (precision < 0 || c < precision)) {
+						if ((*func)(*cptr_temp, dest) == EOF)
+							return EOF;
+						cptr_temp++;
+						c++;
+					}
+					while (c < width) {
+						if ((*func)(' ', dest) == EOF)
+							return EOF;
+						c++;
+					}
+					count += c;
+					continue;
+				}
+				/* For right-justified strings we use the usual (small) buffer. */
 				/* Get the string length */
 				for (c = 0; c < MAXFLD; c++) {
 					if (cptr_temp[c] == '\0') {
@@ -654,22 +671,22 @@ int _prf(int (*func)(), void *dest, char *format, va_list vargs)
 				return EOF;
 
 			if (need_justifying) {
-				if (c < width) {
+				if (c < width_limited) {
 					if (fminus)	{
 						/* Left justify? */
-						for (i = c; i < width; i++)
+						for (i = c; i < width_limited; i++)
 							buf[i] = ' ';
 					} else {
 						/* Right justify */
-						(void) memmove((buf + (width - c)), buf, (size_t) (c
+						(void) memmove((buf + (width_limited - c)), buf, (size_t) (c
 										+ 1));
 						if (pad == ' ')
 							prefix = 0;
-						c = width - c + prefix;
+						c = width_limited - c + prefix;
 						for (i = prefix; i < c; i++)
 							buf[i] = pad;
 					}
-					c = width;
+					c = width_limited;
 				}
 
 				for (cptr = buf; c > 0; c--, cptr++, count++) {
