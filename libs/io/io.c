@@ -419,7 +419,9 @@ extern void __atexit_hack(int status);
 
 void exit(int status)
 {
-  __atexit_hack(status);
+  // Check if __rt_deinit() has not been called (i.e., exit() was directly called)
+  if (_rt_io_uart != NULL)
+    __atexit_hack(status);
   __rt_exit_debug_bridge(status);
   apb_soc_status_set(status);
   hal_cluster_ctrl_eoc_set(1);
@@ -430,7 +432,9 @@ void exit(int status)
 
 void exit(int status)
 {
-  __atexit_hack(status);
+  // Check if __rt_deinit() has not been called (i.e., exit() was directly called)
+  if (_rt_io_uart != NULL)
+    __atexit_hack(status);
   apb_soc_status_set(status);
   __rt_exit_debug_bridge(status);
   __wait_forever();
@@ -444,7 +448,9 @@ RT_L2_DATA int tohost;
 
 void exit(int status)
 {
-  __atexit_hack(status);
+  // Check if __rt_deinit() has not been called (i.e., exit() was directly called)
+  if (_rt_io_uart != NULL)
+    __atexit_hack(status);
   __rt_exit_debug_bridge(status);
   tohost = status;
   apb_soc_status_set(status);
@@ -455,7 +461,9 @@ void exit(int status)
 
 void exit(int status)
 {
-  __atexit_hack(status);
+  // Check if __rt_deinit() has not been called (i.e., exit() was directly called)
+  if (_rt_io_uart != NULL)
+    __atexit_hack(status);
 #if defined(ARCHI_L2_ADDR)
   *(volatile int*)(ARCHI_L2_ADDR) = status;
 #endif

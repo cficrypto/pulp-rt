@@ -34,9 +34,10 @@ int __main( int argc, char* argv[] ) {
 }
 
 int _main( int argc, char* argv[] ) {
-  volatile int status = main( argc, argv );
-  __atexit_hack(status);
-  return status;
+  int ret = main( argc, argv );
+  // Call __atexit_hack here because in exit() __rt_deinit() would have been called already
+  __atexit_hack(ret);
+  return ret;
 }
 
 int pmsis_exit_value;
