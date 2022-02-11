@@ -701,7 +701,7 @@ typedef struct
   int free_stacks;
 } rt_task_cluster_t;
 
-extern rt_padframe_profile_t __rt_padframe_profiles[];
+extern rt_padframe_profile_t *__rt_padframe_profiles;
 
 #ifdef ARCHI_UDMA_HAS_HYPER
 extern RT_FC_TINY_DATA void *__rt_hyper_udma_handle;

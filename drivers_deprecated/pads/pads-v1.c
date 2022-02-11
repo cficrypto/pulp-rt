@@ -41,8 +41,9 @@ __attribute__((weak)) int __rt_nb_profile = 3;
 
 #else
 
-__attribute__((weak)) rt_padframe_profile_t __rt_padframe_profiles[0] = {
+static rt_padframe_profile_t ___rt_padframe_profiles[0] = {
 };
+__attribute__((weak)) rt_padframe_profile_t *__rt_padframe_profiles = ___rt_padframe_profiles;
 
 __attribute__((weak)) int __rt_nb_profile = 0;
 
