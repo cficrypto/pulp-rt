@@ -32,7 +32,7 @@
 
 static inline int32_t pi_freq_set(pi_freq_domain_e domain, uint32_t freq)
 {
-  return rt_freq_set_and_get(domain, freq, NULL);
+  return rt_freq_set_and_get((rt_freq_domain_e)domain, freq, NULL);
 }
 
 static inline uint32_t pi_freq_get(pi_freq_domain_e domain)
