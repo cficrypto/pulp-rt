@@ -129,7 +129,7 @@ __rt_master_loop_update_next:
 
 #ifdef __RT_USE_PROFILE
     li      a0, GV_SEMIHOSTING_VCD_DUMP_TRACE
-    lw      a1, %tiny(__rt_pe_trace)(x0)
+    lw      a1, %lo(__rt_pe_trace)(x0)
     li      a2, 0
     li      a4, 0
     ebreak
@@ -156,7 +156,7 @@ __rt_master_loop_update_next:
     la      t4, __rt_cluster_nb_active_pe
     sw      t6, 0(t4)
 #else
-    sw      t6, %tiny(__rt_cluster_nb_active_pe)(x0)
+    sw      t6, %lo(__rt_cluster_nb_active_pe)(x0)
 #endif
 
 #ifdef __RT_USE_ASSERT
@@ -201,7 +201,7 @@ __rt_master_loop_no_slave:
 __rt_master_sleep:
 #ifdef __RT_USE_PROFILE
     li      a0, GV_SEMIHOSTING_VCD_DUMP_TRACE
-    lw      a1, %tiny(__rt_pe_trace)(x0)
+    lw      a1, %lo(__rt_pe_trace)(x0)
     li      a2, 1
     ebreak
 #endif
@@ -259,7 +259,7 @@ __rt_wait_for_dispatch:
 #ifdef __RT_USE_PROFILE
     li      a0, GV_SEMIHOSTING_VCD_DUMP_TRACE
     slli    t2, s3, 2
-    lw      a1, %tiny(__rt_pe_trace)(t2)
+    lw      a1, %lo(__rt_pe_trace)(t2)
     li      a2, 1
     ebreak
 #endif
@@ -272,7 +272,7 @@ __rt_wait_for_dispatch:
     mv      t1, a0
     li      a0, GV_SEMIHOSTING_VCD_DUMP_TRACE
     slli    t2, s3, 2
-    lw      a1, %tiny(__rt_pe_trace)(t2)
+    lw      a1, %lo(__rt_pe_trace)(t2)
     li      a2, 0
     li      a4, 1
     ebreak

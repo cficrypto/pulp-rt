@@ -163,16 +163,16 @@ dmaCmd:
   sw          x9, MCHAN_BASE_OFFSET+PLP_DMA_QUEUE_OFFSET(x11)             // store L2 addr to DMA from x9
 
   // Updated DMA pending copies linked list
-  lw          x11, %tiny(firstDmaCopy)(x0)          // x11 = firstDmaCopy
+  lw          x11, %lo(firstDmaCopy)(x0)          // x11 = firstDmaCopy
   addi        x10, x8, RT_PERIPH_COPY_T_DMACOPY      // x10 = DMA copy address computed from x8
   beq         x11, x0, isFirst                      // check if we don't have any pending copy
-  lw          x11, %tiny(lastDmaCopy)(x0)           // x11 = lastDmaCopy
+  lw          x11, %lo(lastDmaCopy)(x0)           // x11 = lastDmaCopy
   sw          x10, PLP_DMA_COPY_T_NEXT(x11)          // store copy in x10 to lastDmaCopy->next
   j           resume
 isFirst:   
-  sw          x10, %tiny(firstDmaCopy)(x0)          // It is the first copy, just store it to firstDmaCopy
+  sw          x10, %lo(firstDmaCopy)(x0)          // It is the first copy, just store it to firstDmaCopy
 resume:
-  sw          x10, %tiny(lastDmaCopy)(x0)           // store copy in x10 in lastDmaCopy
+  sw          x10, %lo(lastDmaCopy)(x0)           // store copy in x10 in lastDmaCopy
   sw          x0, PLP_DMA_COPY_T_NEXT(x10)
   j           udma_event_handler_end
 #endif

@@ -30,7 +30,7 @@ __rt_hyper_handle_copy:
   sw  x8, -4(sp)
   add sp, sp, -128
 
-  lw    x12, %tiny(__rt_hyper_pending_repeat)(x0)
+  lw    x12, %lo(__rt_hyper_pending_repeat)(x0)
   beqz      x12, __rt_hyper_handle_copy_end
 
 
@@ -40,32 +40,32 @@ __rt_hyper_handle_copy:
 //   x12 : number of bytes to repeat
 __rt_hyper_repeat_copy:
 
-  lw        x11, %tiny(__rt_hyper_pending_base)(x0)
+  lw        x11, %lo(__rt_hyper_pending_base)(x0)
   
 #ifdef RV_ISA_RV32
   li        x10, ~(1<<UDMA_CHANNEL_SIZE_LOG2)
   and       x9, x11, x10
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 #else
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
   p.bclr    x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   add       x10, x10, x12
   sw        x10, HYPER_EXT_ADDR_CHANNEL_CUSTOM_OFFSET(x9)
-  sw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  sw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 
-  lw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  lw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  lw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  lw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   add       x10, x10, x12
   sub       x9, x9, x12
   blt       x12, x9, __rt_hyper_repeat_copy_not_last
   mv        x12, x9
-  sw        x0, %tiny(__rt_hyper_pending_repeat)(x0)
+  sw        x0, %lo(__rt_hyper_pending_repeat)(x0)
   beq       x12, x0, udma_event_handler_end_hyper
 
 __rt_hyper_repeat_copy_not_last:
-  sw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  sw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  sw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  sw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   sw        x10, UDMA_CHANNEL_SADDR_OFFSET(x11)
   sw        x12, UDMA_CHANNEL_SIZE_OFFSET(x11)
 
@@ -79,13 +79,13 @@ __rt_hyper_repeat_copy_not_last:
 
 
 __rt_hyper_handle_copy_end:
-  lw        x11, %tiny(__rt_hyper_end_task)(x0)
-  sw        x0, %tiny(__rt_hyper_end_task)(x0)
+  lw        x11, %lo(__rt_hyper_end_task)(x0)
+  sw        x0, %lo(__rt_hyper_end_task)(x0)
   beqz      x11, __rt_hyper_handle_emu_task
   jal       x9, __rt_event_enqueue
   
 __rt_hyper_handle_emu_task:
-  lw        x10, %tiny(__rt_hyper_pending_emu_task)(x0)
+  lw        x10, %lo(__rt_hyper_pending_emu_task)(x0)
   beqz      x10, __rt_hyper_handle_pending_tasks
 
   la      x12, __rt_hyper_resume_emu_task
@@ -94,7 +94,7 @@ __rt_hyper_handle_emu_task:
 
 
 __rt_hyper_handle_pending_tasks:
-  lw        x10, %tiny(__rt_hyper_pending_tasks)(x0)
+  lw        x10, %lo(__rt_hyper_pending_tasks)(x0)
   beqz      x10, udma_event_handler_end_hyper
 
   la      x12, __rt_hyper_resume_copy
@@ -119,7 +119,7 @@ __rt_hyper_handler:
   sw  x9, -8(sp)
   sw  x10, -12(sp)
   sw  x12, -20(sp)
-  lw        x12, %tiny(__rt_hyper_udma_handle)(x0)
+  lw        x12, %lo(__rt_hyper_udma_handle)(x0)
   sw  x11, -16(sp)
   jr        x12
 
@@ -133,31 +133,31 @@ __rt_hyper_handle_burst:
 //   x9  : pointer to channel
 //   x12 : number of bytes to repeat
 
-  lw        x12, %tiny(__rt_hyper_pending_repeat)(x0)
+  lw        x12, %lo(__rt_hyper_pending_repeat)(x0)
 
-  lw        x11, %tiny(__rt_hyper_pending_base)(x0)
+  lw        x11, %lo(__rt_hyper_pending_base)(x0)
   
 #ifdef RV_ISA_RV32
   li        x10, ~(1<<UDMA_CHANNEL_SIZE_LOG2)
   and       x9, x11, x10
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 #else
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
   p.bclr    x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   add       x10, x10, x12
   sw        x10, HYPER_EXT_ADDR_CHANNEL_CUSTOM_OFFSET(x9)
-  sw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  sw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 
-  lw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  lw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  lw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  lw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   add       x10, x10, x12
   sub       x9, x9, x12
   bge       x12, x9, __rt_hyper_repeat_copy_last3
 
 __rt_hyper_repeat_copy_not_last3:
-  sw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  sw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  sw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  sw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   sw        x10, UDMA_CHANNEL_SADDR_OFFSET(x11)
   sw        x12, UDMA_CHANNEL_SIZE_OFFSET(x11)
 
@@ -172,10 +172,10 @@ __rt_hyper_repeat_copy_not_last3:
 
 __rt_hyper_repeat_copy_last3:
   la        x12, __rt_hyper_handle_copy
-  sw        x12, %tiny(__rt_hyper_udma_handle)(x0)
+  sw        x12, %lo(__rt_hyper_udma_handle)(x0)
 
   mv        x12, x9
-  sw        x0, %tiny(__rt_hyper_pending_repeat)(x0)
+  sw        x0, %lo(__rt_hyper_pending_repeat)(x0)
   beq       x12, x0, udma_event_handler_end
 
   j         __rt_hyper_repeat_copy_not_last3
@@ -186,7 +186,7 @@ __rt_hyper_repeat_copy_last3:
   .global __rt_hyper_handle_copy
 __rt_hyper_handle_copy:
 
-  lw    x12, %tiny(__rt_hyper_pending_repeat)(x0)
+  lw    x12, %lo(__rt_hyper_pending_repeat)(x0)
   beqz      x12, __rt_hyper_handle_copy_end
 
 
@@ -196,32 +196,32 @@ __rt_hyper_handle_copy:
 //   x12 : number of bytes to repeat
 __rt_hyper_repeat_copy:
 
-  lw        x11, %tiny(__rt_hyper_pending_base)(x0)
+  lw        x11, %lo(__rt_hyper_pending_base)(x0)
   
 #ifdef RV_ISA_RV32
   li        x10, ~(1<<UDMA_CHANNEL_SIZE_LOG2)
   and       x9, x11, x10
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 #else
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
   p.bclr    x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   add       x10, x10, x12
   sw        x10, HYPER_EXT_ADDR_CHANNEL_CUSTOM_OFFSET(x9)
-  sw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  sw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 
-  lw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  lw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  lw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  lw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   add       x10, x10, x12
   sub       x9, x9, x12
   blt       x12, x9, __rt_hyper_repeat_copy_not_last
   mv        x12, x9
-  sw        x0, %tiny(__rt_hyper_pending_repeat)(x0)
+  sw        x0, %lo(__rt_hyper_pending_repeat)(x0)
   beq       x12, x0, udma_event_handler_end
 
 __rt_hyper_repeat_copy_not_last:
-  sw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  sw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  sw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  sw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   sw        x10, UDMA_CHANNEL_SADDR_OFFSET(x11)
   sw        x12, UDMA_CHANNEL_SIZE_OFFSET(x11)
 
@@ -235,13 +235,13 @@ __rt_hyper_repeat_copy_not_last:
 
 
 __rt_hyper_handle_copy_end:
-  lw        x11, %tiny(__rt_hyper_end_task)(x0)
-  sw        x0, %tiny(__rt_hyper_end_task)(x0)
+  lw        x11, %lo(__rt_hyper_end_task)(x0)
+  sw        x0, %lo(__rt_hyper_end_task)(x0)
   beqz      x11, __rt_hyper_handle_emu_task
   jal       x9, __rt_event_enqueue
   
 __rt_hyper_handle_emu_task:
-  lw        x10, %tiny(__rt_hyper_pending_emu_task)(x0)
+  lw        x10, %lo(__rt_hyper_pending_emu_task)(x0)
   beqz      x10, __rt_hyper_handle_pending_tasks
 
   la      x12, __rt_hyper_resume_emu_task
@@ -250,7 +250,7 @@ __rt_hyper_handle_emu_task:
 
 
 __rt_hyper_handle_pending_tasks:
-  lw        x10, %tiny(__rt_hyper_pending_tasks)(x0)
+  lw        x10, %lo(__rt_hyper_pending_tasks)(x0)
   beqz      x10, udma_event_handler_end
 
   la      x12, __rt_hyper_resume_copy
@@ -265,38 +265,38 @@ __rt_hyper_handle_pending_tasks:
   .global __rt_hyper_handle_burst
 __rt_hyper_handle_burst:
 
-  lw        x12, %tiny(__rt_hyper_pending_repeat)(x0)
+  lw        x12, %lo(__rt_hyper_pending_repeat)(x0)
 
-  lw        x11, %tiny(__rt_hyper_pending_base)(x0)
+  lw        x11, %lo(__rt_hyper_pending_base)(x0)
   
 #ifdef RV_ISA_RV32
   li        x10, ~(1<<UDMA_CHANNEL_SIZE_LOG2)
   and       x9, x11, x10
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 #else
-  lw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
   p.bclr    x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   add       x10, x10, x12
   sw        x10, HYPER_EXT_ADDR_CHANNEL_CUSTOM_OFFSET(x9)
-  sw        x10, %tiny(__rt_hyper_pending_hyper_addr)(x0)
+  sw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 
-  lw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  lw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  lw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  lw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   add       x10, x10, x12
   sub       x9, x9, x12
   blt       x12, x9, __rt_hyper_repeat_copy_not_last2
 
   la        x12, __rt_hyper_handle_copy
-  sw        x12, %tiny(__rt_hyper_udma_handle)(x0)
+  sw        x12, %lo(__rt_hyper_udma_handle)(x0)
 
   mv        x12, x9
-  sw        x0, %tiny(__rt_hyper_pending_repeat)(x0)
+  sw        x0, %lo(__rt_hyper_pending_repeat)(x0)
   beq       x12, x0, udma_event_handler_end
 
 __rt_hyper_repeat_copy_not_last2:
-  sw        x10, %tiny(__rt_hyper_pending_addr)(x0)
-  sw        x9, %tiny(__rt_hyper_pending_repeat_size)(x0)
+  sw        x10, %lo(__rt_hyper_pending_addr)(x0)
+  sw        x9, %lo(__rt_hyper_pending_repeat_size)(x0)
   sw        x10, UDMA_CHANNEL_SADDR_OFFSET(x11)
   sw        x12, UDMA_CHANNEL_SIZE_OFFSET(x11)
 

@@ -38,7 +38,7 @@ __pi_spim_handle_copy:
 
   // Get the SPI context
   slli   x8, x10, 2  
-  lw     x8, %tiny(__rt_udma_channels)(x8)
+  lw     x8, %lo(__rt_udma_channels)(x8)
 
   // Check if we have to repeat the current transfer
   lw     x11, PI_SPIM_T_REPEAT_LEN(x8)

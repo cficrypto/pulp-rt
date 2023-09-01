@@ -32,7 +32,7 @@ __pi_spim_handle_eot:
   andi   x8, x10, 0xfffffffc
 
   // Get the SPI context
-  lw     x8, %tiny(__rt_udma_callback_data)(x8)
+  lw     x8, %lo(__rt_udma_callback_data)(x8)
 
   // Check if we have to repeat the current transfer
   lw     x11, PI_SPIM_T_REPEAT_LEN(x8)

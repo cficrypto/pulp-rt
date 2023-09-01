@@ -38,10 +38,10 @@ __rt_gpio_handler:
   // do an OR with current SW status and update it
   li  x10, ARCHI_GPIO_ADDR + GPIO_INTSTATUS_OFFSET
   lw  x10, 0(x10)
-  lw  x12, %tiny(__rt_gpio_status)(x0)
-  lw  x8, %tiny(__rt_gpio_active_events)(x0)
+  lw  x12, %lo(__rt_gpio_status)(x0)
+  lw  x8, %lo(__rt_gpio_active_events)(x0)
   or  x12, x12, x10
-  sw  x12, %tiny(__rt_gpio_status)(x0)
+  sw  x12, %lo(__rt_gpio_status)(x0)
 
   // If there is no event attached to the gpio which have changed, just leave
   and x8, x8, x10
@@ -67,7 +67,7 @@ __rt_gpio_ff1_loop:
   p.bclrr  x8, x8, x9
   slli     x9, x9, 2   
 
-  p.lw     x11, %tiny(__rt_gpio_events)(x9)
+  p.lw     x11, %lo(__rt_gpio_events)(x9)
   jal      x9, __rt_event_enqueue
 
   bnez     x8, __rt_gpio_ff1_loop

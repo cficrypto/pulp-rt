@@ -28,7 +28,7 @@
 __rt_udma_handle_copy:
 
   slli   x8, x10, 2
-  lw     x8, %tiny(__rt_udma_channels)(x8)
+  lw     x8, %lo(__rt_udma_channels)(x8)
 
   // First update all the queues
   lw     x12, RT_UDMA_CHANNEL_T_PENDINGS_1(x8)

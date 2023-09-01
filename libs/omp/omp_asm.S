@@ -28,13 +28,13 @@ GOMP_parallel_do:
   lui       t0, 0x204000 >> 12
   sw        a0, 128(t0)
   sw        a1, 128(t0)
-  sw        ra, %tiny(parallelTemp0)(x0)
+  sw        ra, %lo(parallelTemp0)(x0)
   //c.mv      a2, a0
   //c.mv      a0, a1
   mv      a2, a0
   mv      a0, a1
   jalr      ra, a2
-  lw        ra, %tiny(parallelTemp0)(x0)
+  lw        ra, %lo(parallelTemp0)(x0)
   lui       t0, 0x204000 >> 12
 #ifdef ARCHI_HAS_CC
   // When having a cluster controller, the fork is using barrier 1 to

@@ -28,7 +28,7 @@
 __rt_i2c_handle_tx_copy:
 
   slli   x8, x10, 2
-  lw     x8, %tiny(__rt_udma_channels)(x8)
+  lw     x8, %lo(__rt_udma_channels)(x8)
 
   lw  	x11, PI_I2C_T_PENDING_STEP(x8)
   jr    x11
@@ -80,6 +80,6 @@ __rt_i2c_step3:
 __rt_i2c_handle_rx_copy:
 
   slli   x8, x10, 2
-  lw     x8, %tiny(__rt_udma_channels)(x8)
+  lw     x8, %lo(__rt_udma_channels)(x8)
 
   j      __rt_i2c_step3

@@ -30,7 +30,7 @@ __rt_rtc_handler:
   sw  x12, 16(sp)
 
 
-  lw    x11, %tiny(__rtc_handler)(x0)
+  lw    x11, %lo(__rtc_handler)(x0)
   jal   x9, __rt_event_enqueue
 
 

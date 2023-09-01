@@ -61,8 +61,8 @@ __rt_fc_socevents_handler:
   andi x12, x10, 0xfffffffc
 
   // Load callback and callback data and call it
-  lw   x11, %tiny(__rt_udma_callback)(x12)
-  lw   x8, %tiny(__rt_udma_callback_data)(x12)
+  lw   x11, %lo(__rt_udma_callback)(x12)
+  lw   x8, %lo(__rt_udma_callback_data)(x12)
 
   jr   x11
 
@@ -83,7 +83,7 @@ __rt_fc_socevents_register:
   // If the event is not handled, store it in the soc event status mask
   srli    x11, x10, 5
   slli    x11, x11, 2
-  lw      x12, %tiny(__rt_socevents_status)(x11)
+  lw      x12, %lo(__rt_socevents_status)(x11)
   andi    x10, x10, 0x1f
 
 #ifdef RV_ISA_RV32
@@ -94,7 +94,7 @@ __rt_fc_socevents_register:
   p.bsetr x12, x12, x10
 #endif
 
-  sw      x12, %tiny(__rt_socevents_status)(x11)
+  sw      x12, %lo(__rt_socevents_status)(x11)
 
 
 
