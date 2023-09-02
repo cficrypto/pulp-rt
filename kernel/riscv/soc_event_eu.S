@@ -50,14 +50,14 @@ __rt_fc_socevents_handler:
 #endif
 
   // Extract ID part
-  p.extractu x10, x8, EU_SOC_EVENTS_EVENT_MASK_BITS-1, EU_SOC_EVENTS_EVENT_MASK_OFFSET
+  cv.extractu x10, x8, EU_SOC_EVENTS_EVENT_MASK_BITS-1, EU_SOC_EVENTS_EVENT_MASK_OFFSET
 
 #ifdef ARCHI_UDMA_HAS_HYPER
-  p.bneimm x10, UDMA_EVENT_ID(ARCHI_UDMA_HYPER_ID(0)), __rt_fc_socevents_not_hyper_rx
+  cv.bneimm x10, UDMA_EVENT_ID(ARCHI_UDMA_HYPER_ID(0)), __rt_fc_socevents_not_hyper_rx
   jr x12
 
 __rt_fc_socevents_not_hyper_rx:
-  p.bneimm x10, UDMA_EVENT_ID(ARCHI_UDMA_HYPER_ID(0))+1, __rt_fc_socevents_not_hyper_tx
+  cv.bneimm x10, UDMA_EVENT_ID(ARCHI_UDMA_HYPER_ID(0))+1, __rt_fc_socevents_not_hyper_tx
   jr x12
 #endif
 
@@ -133,7 +133,7 @@ __rt_soc_evt_store:
 
 socevents_set:
   lw      x11, 0(x9)
-  p.bsetr x12, x11, x10
+  cv.bsetr x12, x11, x10
   sw      x12, 0(x9)
   j       udma_event_handler_end
 

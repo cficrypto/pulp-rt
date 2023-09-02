@@ -45,7 +45,7 @@ __rt_hyper_repeat_copy:
   lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
 #else
   lw        x10, %lo(__rt_hyper_pending_hyper_addr)(x0)
-  p.bclr    x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
+  cv.bclr    x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   add       x10, x10, x12
   sw        x10, HYPER_EXT_ADDR_OFFSET(x9)

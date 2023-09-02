@@ -29,7 +29,7 @@ pwm_event_handler:
   la   x10, pwmEventsStatus
   addi  x11, x0, 1
   lw   x8, 0(x10)
-  p.insertr x8, x11, x9
+  cv.insertr x8, x11, x9
   sw   x8, 0(x10)
 
   // continue with sw event raising

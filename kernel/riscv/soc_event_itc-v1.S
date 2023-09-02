@@ -85,7 +85,7 @@ socevents_set:
   sll     x10, x8, x10
   or      x12, x11, x10
 #else
-  p.bsetr x12, x11, x10
+  cv.bsetr x12, x11, x10
 #endif
   sw      x12, 0(x9)
   

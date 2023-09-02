@@ -80,14 +80,14 @@ __rt_task_loop_entry:
 
 __rt_task_loop_wait:
     sw      s3, EU_CORE_MASK_OR(s2)
-    p.elw   x0, EU_CORE_EVENT_WAIT_CLEAR(s2)
+    cv.elw   x0, EU_CORE_EVENT_WAIT_CLEAR(s2)
     sw      s3, EU_CORE_MASK_AND(s2)
 
 
 
 __rt_task_loop:
     mv      t6, s0
-    p.elw   t0, EU_MUTEX_DEMUX_OFFSET(s2)
+    cv.elw   t0, EU_MUTEX_DEMUX_OFFSET(s2)
     lw      a0, 0(s0)
     lw      t1, 0(s1)
     bnez    a0, __rt_task_fc
@@ -144,7 +144,7 @@ __rt_task_push_event_to_fc_retry:
     
     beqz    t2, __rt_task_cl_end
 
-    p.elw   t0, EU_MUTEX_DEMUX_OFFSET(s2)
+    cv.elw   t0, EU_MUTEX_DEMUX_OFFSET(s2)
 
     // Now we have to push the termination event to FC side
     // First wait until the slot for posting events is free
@@ -245,7 +245,7 @@ __rt_task_fc_mc_no_dequeue:
     jalr    ra, t2
 
 __rt_task_fc_mc_end:
-    p.elw   t0, EU_MUTEX_DEMUX_OFFSET(s2)
+    cv.elw   t0, EU_MUTEX_DEMUX_OFFSET(s2)
     lb      t1, RT_TASK_T_NB_CORES_TO_END(s6)
     addi    t1, t1, -1
     sb      t1, RT_TASK_T_NB_CORES_TO_END(s6)

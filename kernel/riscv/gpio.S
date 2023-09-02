@@ -63,11 +63,11 @@ __rt_gpio_ff1_loop:
 #else
 
 __rt_gpio_ff1_loop:
-  p.ff1    x9, x8
-  p.bclrr  x8, x8, x9
+  cv.ff1    x9, x8
+  cv.bclrr  x8, x8, x9
   slli     x9, x9, 2   
 
-  p.lw     x11, %lo(__rt_gpio_events)(x9)
+  lw     x11, %lo(__rt_gpio_events)(x9)
   jal      x9, __rt_event_enqueue
 
   bnez     x8, __rt_gpio_ff1_loop

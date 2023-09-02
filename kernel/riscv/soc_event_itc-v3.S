@@ -91,7 +91,7 @@ __rt_fc_socevents_register:
   sll     x10, x8, x10
   or      x12, x12, x10
 #else
-  p.bsetr x12, x12, x10
+  cv.bsetr x12, x12, x10
 #endif
 
   sw      x12, %lo(__rt_socevents_status)(x11)

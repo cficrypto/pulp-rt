@@ -84,8 +84,8 @@ __rt_udma_call_enqueue_callback_resume:
   li          x10, RT_PERIPH_COPY_FC_TCDM
   beq         x9, x10, fc_tcdm
 #else
-  p.beqimm      x9, RT_PERIPH_COPY_HYPER, hyper
-  p.beqimm      x9, RT_PERIPH_COPY_FC_TCDM, fc_tcdm
+  cv.beqimm      x9, RT_PERIPH_COPY_HYPER, hyper
+  cv.beqimm      x9, RT_PERIPH_COPY_FC_TCDM, fc_tcdm
 #endif
 
 
@@ -108,7 +108,7 @@ fc_tcdm:
   lw    x10, RT_PERIPH_COPY_T_EXT_ADDR(x11)
 #else
   lw    x10, RT_PERIPH_COPY_T_EXT_ADDR(x11)
-  p.bclr  x9, x12, 0, UDMA_CHANNEL_SIZE_LOG2
+  cv.bclr  x9, x12, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   beq   x9, x12, fcTcdm_rx
   sw    x10, UDMA_CHANNEL_CUSTOM_OFFSET+TCDM_T_DST_SADDR(x9)
@@ -127,7 +127,7 @@ hyper:
   lw    x10, RT_PERIPH_COPY_T_HYPER_ADDR(x11)
 #else
   lw    x10, RT_PERIPH_COPY_T_HYPER_ADDR(x11)
-  p.bclr  x9, x12, 0, UDMA_CHANNEL_SIZE_LOG2
+  cv.bclr  x9, x12, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   sw    x10, HYPER_EXT_ADDR_CHANNEL_CUSTOM_OFFSET(x9)
 #endif
@@ -195,7 +195,7 @@ repeat_transfer:
   lw      x10, RT_PERIPH_COPY_T_HYPER_ADDR(x8)
 #else
   lw      x10, RT_PERIPH_COPY_T_HYPER_ADDR(x8)
-  p.bclr  x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
+  cv.bclr  x9, x11, 0, UDMA_CHANNEL_SIZE_LOG2
 #endif
   add     x10, x10, x12
   sw      x10, HYPER_EXT_ADDR_CHANNEL_CUSTOM_OFFSET(x9)
@@ -251,8 +251,8 @@ handle_special_end:
   li          x12, RT_PERIPH_COPY_I2C_STEP2
   beq         x10, x12, i2c_step2
 #else
-  p.beqimm    x10, RT_PERIPH_COPY_I2C_STEP1, i2c_step1  
-  p.beqimm    x10, RT_PERIPH_COPY_I2C_STEP2, i2c_step2
+  cv.beqimm    x10, RT_PERIPH_COPY_I2C_STEP1, i2c_step1
+  cv.beqimm    x10, RT_PERIPH_COPY_I2C_STEP2, i2c_step2
 #endif
 
   j           resume_after_special_end
